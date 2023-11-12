@@ -1,0 +1,49 @@
+@import './Custom.scss';
+
+.main {
+    margin-bottom: 100px;
+}
+
+.navbar {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    position: fixed;
+    bottom: 0;
+    padding-top: 10px;
+
+    padding-bottom: max(10px, env(safe-area-inset-bottom, 10px));
+
+    background-color: $yellow-700;
+    overflow: hidden;
+
+    .item {
+        color: black;
+        font-size: 20px;
+
+        &-selected {
+            @extend .item;
+            color: red;
+        }
+    }
+}
+
+.heading {
+    padding: 20px;
+}
+
+input::-webkit-date-and-time-value {
+    text-align: left;
+}
+
+.error-alert {
+    width: 400px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+
+    @media #{$sm} {
+        width: auto;
+        right: 10px;
+    }
+}
