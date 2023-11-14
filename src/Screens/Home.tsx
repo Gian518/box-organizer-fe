@@ -6,6 +6,7 @@ import { Result } from '@zxing/library'
 import useScan from '../Config/Scan'
 import { Button, Col, Container, Row } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
+import { DateTime } from "luxon"
 
 const Home: React.FC = () => {
 
@@ -20,9 +21,21 @@ const Home: React.FC = () => {
 		onResult: (data: Result) => {
 			console.log("Data:", data)
 			setCode(data.getText())
-			navigate('/register-code?code=' + data.getText())
+			// Check if code exists
+			const boxExists = true
+			if (boxExists) {
+				navigate('box', {
+					state: {
+						code: data.getText(),
+						name: 'Vacuum Box',
+						registerDate: DateTime.fromISO('2023-05-01T00:00:00.000').toISODate(),
+						photo: 'https://placekitten.com/300/200'
+					}
+				})
+			} else {
+				navigate('/register-code?code=' + data.getText())
+			}
 		},
-		// onError: error => setCode(code + "\n\nNo code found")
 
 	})
 

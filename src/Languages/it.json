@@ -1,9 +1,13 @@
 {
     "welcome": "Benvenutə!",
+    "home": "Home",
+    "history": "Cronologia",
     "scanBox": "Scansiona nuova scatola",
     "caricamento": "Caricamento...",
     "completed": "Completato",
     "error": "Errore",
+    "cancel": "Annulla",
+    "confirm": "Conferma",
     "nothingHere": "Qui non c'è niente!",
     "pageNotFound": "La pagina che hai provato ad aprire non esiste.",
     "newBox": "Nuova scatola",
@@ -24,5 +28,12 @@
     "registerBox": "Registra scatola",
     "uploadCompleted": "Scatola registrata con successo!",
     "goHome": "Torna alla home",
-    "uploadError": "Si è verificato un errore durante la registrazione. La scatola non è stata salvata. Riprova più tardi."
+    "uploadError": "Si è verificato un errore durante la registrazione. La scatola non è stata salvata. Riprova più tardi.",
+    "canThrowBox": "Puoi buttare la scatola",
+    "cannotThrowBox": "Non puoi ancora buttare la scatola",
+    "expirationDate": "Data di scadenza",
+    "remainingDays": "Giorni rimanenti",
+    "passedDays": "Giorni passati dalla scadenza",
+    "deleteBox": "Elimina scatola",
+    "deleteBoxDisclaimer": "Sei sicuro di voler eliminare questa scatola? L'azione è irreversibile."
 }

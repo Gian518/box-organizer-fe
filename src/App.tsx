@@ -26,6 +26,7 @@ import Home from 'Screens/Home'
 import History from 'Screens/History'
 import RegisterCode from 'Screens/RegisterCode'
 import NotFound from 'Screens/NotFound'
+import BoxView from 'Screens/BoxView'
 
 i18next
 	.use(LanguageDetector)
@@ -53,6 +54,7 @@ const App: React.FC = () => {
 						<Route path='/' element={<Home />} />
 						<Route path='/history' element={<History />} />
 						<Route path='/register-code' element={<RegisterCode />} />
+						<Route path='/box' element={<BoxView />} />
 						<Route path='*' element={<NotFound />} />
 					</Routes>
 				</div>

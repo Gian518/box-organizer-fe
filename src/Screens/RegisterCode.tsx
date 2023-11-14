@@ -23,6 +23,7 @@ const RegisterCode: React.FC = () => {
 	/**** HOOKS ****/
 	const [params] = useSearchParams()
 
+	/**** BOOT ****/
 	useEffect(() => {
 		const urlCode = params.get('code')
 		if (!urlCode || urlCode == '') {

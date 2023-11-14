@@ -1,3 +1,4 @@
+import { t } from "i18next"
 import React from "react"
 import { Nav, Navbar } from "react-bootstrap"
 import { ClockHistory, House } from "react-bootstrap-icons"
@@ -10,13 +11,13 @@ const Menu: React.FC = () => {
 			{/* Home */}
 			<Nav.Item>
 				<NavLink to='/' className={({ isActive, isPending }) => isActive ? 'item-selected' : 'item'}>
-					<House /> Home
+					<House /> <span>{t('home')}</span>
 				</NavLink>
 			</Nav.Item>
 			{/* History */}
 			<Nav.Item>
 				<NavLink to='/history' className={({ isActive, isPending }) => isActive ? 'item-selected' : 'item'}>
-					<ClockHistory /> History
+					<ClockHistory /> <span>{t('history')}</span>
 				</NavLink>
 			</Nav.Item>
 		</Navbar>
