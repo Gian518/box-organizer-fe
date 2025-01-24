@@ -4,9 +4,10 @@ import React, { FormEvent, useEffect, useState } from "react"
 import { Alert, Button, Col, Container, Form, Row, Spinner, Toast, ToastContainer } from "react-bootstrap"
 
 // Libraries
-import { redirect, useSearchParams } from "react-router-dom"
+import { redirect, useNavigate, useSearchParams } from "react-router-dom"
 import { t } from "i18next"
 import { DateTime } from "luxon"
+import API from '../API'
 
 const RegisterCode: React.FC = () => {
 
@@ -22,6 +23,7 @@ const RegisterCode: React.FC = () => {
 
 	/**** HOOKS ****/
 	const [params] = useSearchParams()
+	const navigate = useNavigate()
 
 	/**** BOOT ****/
 	useEffect(() => {
@@ -37,16 +39,24 @@ const RegisterCode: React.FC = () => {
 	const registerBox = async (event: React.FormEvent) => {
 		event.preventDefault()
 		const form = event.target as HTMLFormElement
-		console.log("Form:", form)
-		console.log("Photo:", photoFile)
 		try {
 			if (form.checkValidity() === true) {
-				console.log("Valid!")
-				setTimeout(() => {
+				const res = await API.BoxesController.saveBox({
+					code,
+					name,
+					registerDate: DateTime.fromISO(registerDate),
+					photo: photoFile
+				})
+				if (res?.success) {
+					navigate('/', {
+						state: {
+							success: true
+						}
+					})
+				} else {
 					setErrorVisible(true)
-				}, 500)
+				}
 			} else {
-				console.log("Not valid!")
 				event.stopPropagation()
 			}
 		} catch (error) {
@@ -119,14 +129,14 @@ const RegisterCode: React.FC = () => {
 		return (
 			<Container className="mt-5">
 				<Alert variant='success'>{t('uploadCompleted')}</Alert>
-				<Button className="mt-4 py-2 w-100">{t('goHome')}</Button>
+				<Button onClick={() => navigate('/')} className="mt-4 py-2 w-100">{t('goHome')}</Button>
 			</Container>
 		)
 	} else if (pageStatus == 'error') {
 		return (
 			<Container className="mt-5">
 				<Alert variant='danger'>{t('uploadError')}</Alert>
-				<Button className="mt-4 py-2 w-100">{t('goHome')}</Button>
+				<Button onClick={() => navigate('/')} className="mt-4 py-2 w-100">{t('goHome')}</Button>
 			</Container>
 		)
 	} else if (pageStatus == 'loading') {

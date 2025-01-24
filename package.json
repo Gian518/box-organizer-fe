@@ -29,6 +29,7 @@
 		"react-bootstrap-icons": "^1.10.3",
 		"react-dom": "^18.2.0",
 		"react-i18next": "^13.2.2",
+		"react-infinite-scroll-component": "^6.1.0",
 		"react-router-dom": "^6.16.0",
 		"react-scripts": "5.0.1",
 		"sass": "^1.68.0",
@@ -37,7 +38,7 @@
 		"web-vitals": "^2.1.0"
 	},
 	"scripts": {
-		"start": "HTTPS=true react-scripts start",
+		"start": "react-scripts start",
 		"build": "react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject"

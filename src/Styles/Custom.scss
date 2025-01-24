@@ -1,10 +1,22 @@
+// Layout and spacing
 $border-radius: 0.5rem;
 
 @import '~bootstrap/scss/bootstrap';
 
+// Breakpoints
 $xs: "(max-width: " + map-get($grid-breakpoints, 'xs') + ")";
 $sm: "(max-width: " + map-get($grid-breakpoints, 'sm') + ")";
 $md: "(max-width: " + map-get($grid-breakpoints, 'md') + ")";
 $lg: "(max-width: " + map-get($grid-breakpoints, 'lg') + ")";
 $xl: "(max-width: " + map-get($grid-breakpoints, 'xl') + ")";
 $xxl: "(max-width: " + map-get($grid-breakpoints, 'xxl') + ")";
+
+// Colors
+$primary: #00296B;
+$secondary: #003F88;
+$tertiary: #5788B5;
+$picker: #FDC500;
+$picker-alpha: rgba($picker, .56);
+$picker-alt: #6B5900;
+$picker-alt-alpha: rgba($picker-alt, .56);
+$black-alpha: rgba(0, 0, 0, 0.1);

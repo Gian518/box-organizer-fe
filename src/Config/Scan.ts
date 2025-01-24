@@ -1,13 +1,13 @@
 import { BrowserMultiFormatReader, DecodeHintType, Result } from '@zxing/library'
 import { useEffect, useMemo, useRef } from 'react'
+import useScreenOrientation from './Orientation'
 
 interface ZxingOptions {
 	hints?: Map<DecodeHintType, any>
 	constraints?: MediaStreamConstraints
 	timeBetweenDecodingAttempts?: number
 	onResult?: (result: Result) => void
-	onError?: (error: Error) => void,
-	onSuccess?: () => void,
+	onError?: (error: Error) => void
 }
 
 const useScan = ({
@@ -15,15 +15,16 @@ const useScan = ({
 		audio: false,
 		video: {
 			facingMode: 'environment',
+			aspectRatio: 9 / 16
 		},
 	},
 	hints,
 	timeBetweenDecodingAttempts = 300,
 	onResult = () => { },
 	onError = () => { },
-	onSuccess = () => { },
 }: ZxingOptions = {}) => {
 	const ref = useRef<HTMLVideoElement>(null)
+	const orientation = useScreenOrientation()
 
 	const reader = useMemo<BrowserMultiFormatReader>(() => {
 		const instance = new BrowserMultiFormatReader(hints)
@@ -34,6 +35,10 @@ const useScan = ({
 	useEffect(() => {
 		if (!ref.current) {
 			return
+		}
+
+		if (orientation == 'landscape-primary' && constraints.video) {
+			(constraints.video as MediaTrackConstraints).aspectRatio = 16 / 9
 		}
 
 		reader.decodeFromConstraints(constraints, ref.current, (result, error) => {

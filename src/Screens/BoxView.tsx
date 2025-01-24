@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react'
 
 // Third-party components
 import { Alert, Button, Container, Modal, Spinner } from 'react-bootstrap'
-import { Box2, Check2Circle, Trash, XCircle } from 'react-bootstrap-icons'
+import { Check2Circle, Trash, XCircle } from 'react-bootstrap-icons'
 
 // Libraries
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { DateTime } from 'luxon'
 import { t } from 'i18next'
+import env from 'Config/env'
+import API from 'API'
 
 const BoxView: React.FC = () => {
 
@@ -17,7 +19,7 @@ const BoxView: React.FC = () => {
 	const [registerDate, setRegisterDate] = useState<DateTime | null>(null)
 	const [photo, setPhoto] = useState('')
 	const [expired, setExpired] = useState(false)
-	const [pageStatus, setPageStatus] = useState<'loading' | 'valid' | 'error'>('loading')
+	const [pageStatus, setPageStatus] = useState<'loading' | 'valid' | 'error' | 'deleteError'>('loading')
 	const [deleteModalVisible, setDeleteModalVisible] = useState(false)
 
 	/**** HOOKS ****/
@@ -26,29 +28,47 @@ const BoxView: React.FC = () => {
 
 	/**** BOOT ****/
 	useEffect(() => {
-		if (!location.state.code || !location.state.name || !location.state.registerDate) {
-			navigate('/')
+		if (!location.state || (!location.state.code || !location.state.name || !location.state.registerDate)) {
+			redirect()
+			return
 		}
 		const regDate = DateTime.fromISO(location.state.registerDate)
 		setCode(location.state.code)
 		setName(location.state.name)
 		setRegisterDate(regDate)
 		if (location.state.photo) {
-			setPhoto(location.state.photo)
+			setPhoto(env.api + '/uploads/' + location.state.photo.name)
 		}
 
 		setExpired(regDate!.diffNow('days').days <= -183)
-		console.log("Expired?", regDate!.diffNow('days').days)
-		console.log("Six months ago:", DateTime.local().minus({ days: 183 }))
 		setPageStatus('valid')
+
+		window.scrollTo({
+			top: 0,
+			left: 0,
+			// @ts-ignore
+			behavior: 'instant'
+		})
 	}, [])
+
+	const redirect = () => {
+		navigate(location?.state?.redirectTo ?? '/')
+	}
 
 	const deleteBox = async () => {
 		setDeleteModalVisible(false)
 		try {
-			navigate('/')
+			const res = await API.BoxesController.deleteBox({
+				code
+			})
+			if (res.success) {
+				redirect()
+			} else {
+				throw res
+			}
 		} catch (error) {
 			console.error('Error in BoxView.deleteBox:', error)
+			setPageStatus('deleteError')
 		}
 	}
 
@@ -106,7 +126,17 @@ const BoxView: React.FC = () => {
 					<Modal.Header closeButton>
 						<Modal.Title>{t('deleteBox')}</Modal.Title>
 					</Modal.Header>
-					<Modal.Body>{t('deleteBoxDisclaimer')}</Modal.Body>
+					<Modal.Body>
+						{t('deleteBoxDisclaimer')}
+						{
+							!expired
+							&&
+							<>
+								<br />
+								<b>{t('alertDeleteDisclaimer')}</b>
+							</>
+						}
+					</Modal.Body>
 					<Modal.Footer>
 						<Button variant='secondary' onClick={() => setDeleteModalVisible(false)}>
 							{t('cancel')}
@@ -122,7 +152,14 @@ const BoxView: React.FC = () => {
 		return (
 			<Container className="mt-5">
 				<Alert variant='danger'>{t('uploadError')}</Alert>
-				<Button className="mt-4 py-2 w-100">{t('goHome')}</Button>
+				<Button onClick={() => redirect()} className="mt-4 py-2 w-100">{t('goBack')}</Button>
+			</Container>
+		)
+	} else if (pageStatus == 'deleteError') {
+		return (
+			<Container className="mt-5">
+				<Alert variant='danger'>{t('deleteError')}</Alert>
+				<Button onClick={() => redirect()} className="mt-4 py-2 w-100">{t('goBack')}</Button>
 			</Container>
 		)
 	} else if (pageStatus == 'loading') {

@@ -20,11 +20,7 @@
 		"noEmit": true,
 		"jsx": "react-jsx",
 		"baseUrl": "src",
-		"paths": {
-			"@config/*": [
-				"Config/*"
-			]
-		}
+		"paths": {}
 	},
 	"include": [
 		"src"
