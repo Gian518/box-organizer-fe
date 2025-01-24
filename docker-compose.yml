@@ -1,0 +1,19 @@
+services:
+  box-organizer-fe:
+    container_name: box-organizer-fe
+    image: gian518/box-organizer-fe
+    restart: unless-stopped
+    ports:
+      - 3004:3004
+    environment:
+      - PORT=3004
+      - NODE_ENV=production
+    volumes:
+      - box-organizer-fe:/home/node/app
+    stdin_open: true
+    tty: true
+    # Change this with networks attribute and with your preferred Docker network
+    network_mode: bridge
+
+volumes:
+  box-organizer-fe:
